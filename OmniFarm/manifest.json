@@ -1,0 +1,14 @@
+﻿{
+    "Name": "OmniFarm",
+    "Authour": "PhthaloBlue",
+    "Version": {
+        "MajorVersion": 1,
+        "MinorVersion": 0,
+        "PatchVersion": 0,
+        "Build": ""
+    },
+    "UniqueID": "BlueMod_OmniFarm",
+    "Description": "SMAPI mod to enable intended functions of OmniFarm.",
+    "PerSaveConfigs": false,
+    "EntryDll": "OmniFarm.dll"
+}

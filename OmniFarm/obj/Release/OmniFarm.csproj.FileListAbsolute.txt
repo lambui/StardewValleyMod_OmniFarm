@@ -1,0 +1,6 @@
+C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\PhthaloBlueMods\OmniFarm\OmniFarm\bin\Release\manifest.json
+C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\PhthaloBlueMods\OmniFarm\OmniFarm\bin\Release\OmniFarm.dll
+C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\PhthaloBlueMods\OmniFarm\OmniFarm\bin\Release\OmniFarm.pdb
+C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\PhthaloBlueMods\OmniFarm\OmniFarm\obj\Release\OmniFarm.csprojResolveAssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\PhthaloBlueMods\OmniFarm\OmniFarm\obj\Release\OmniFarm.dll
+C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\PhthaloBlueMods\OmniFarm\OmniFarm\obj\Release\OmniFarm.pdb
