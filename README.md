@@ -19,6 +19,8 @@ This is a mod that modify Farm Combat layout and add extra functionalities to it
   - **Add** ability for farm to generate ores and gems on the mining area on the right of the farm.
   - **Add** ability for farm to generate animal grass everyday (except winter) in areas at bottom right corner of the farm.
   
+![FARM PIC](https://github.com/lambui/StardewValleyMod_OmniFarm/blob/master/OmniFarm.PNG)
+  
 ###Require:  
 1. [Stardew Valley](http://store.steampowered.com/app/413150/)
 2. [SMAPI: +1.1](https://github.com/ClxS/SMAPI/releases)
