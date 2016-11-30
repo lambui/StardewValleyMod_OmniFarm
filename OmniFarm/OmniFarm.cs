@@ -20,7 +20,26 @@ namespace OmniFarm
     {
         public override void Entry(IModHelper helper)
         {
+            StardewModdingAPI.Events.TimeEvents.DayOfMonthChanged += (q, e) =>
+            {
+                //change warp point
+                foreach (GameLocation GL in Game1.locations)
+                {
+                    if (GL is Forest)
+                    {
+                        foreach (Warp w in GL.warps)
+                        {
+                            if (w.TargetName.ToLower().Contains("farm"))
+                            {
+                                w.TargetX = 32;
+                                w.TargetY = 117;
+                            }
+                        }
+                    }
+                }
+            };
             StardewModdingAPI.Events.TimeEvents.OnNewDay += UpdateTickEvent;
+            
 
             /*
             StardewModdingAPI.Events.MineEvents.MineLevelChanged += (q, e) =>
@@ -192,6 +211,17 @@ namespace OmniFarm
                                 default: break;
                             }
                             continue;
+                        }
+                    }
+                }
+                if (GL is Forest)
+                {
+                    foreach(Warp w in GL.warps)
+                    {
+                        if(w.TargetName.ToLower().Contains("farm"))
+                        {
+                            w.TargetX = 32;
+                            w.TargetY = 116;
                         }
                     }
                 }
