@@ -5,7 +5,12 @@
 
 This is a mod that modify Farm Combat layout and add extra functionalities to it.
 
-###Latest Version: [1.0](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
+###Latest Version: [1.1](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
+####Change Log **v.1.1**:
++ **[XNB] Add** fishing - any forest, and mountain fishes
++ **[XNB] Add** weeds, stones, trees, grass... to new areas (only affects new saves)
++ **[SMAPI] Fix** warp points from Forest to Farm no longer warp player to middle of the farm.
+
 ####Change Log **v.1.0**:
 + **XNB Mod** Farm_Combat.xnb.
   - **Add** stairs leading to little cliff area on the left.
