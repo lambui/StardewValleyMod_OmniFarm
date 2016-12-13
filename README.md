@@ -5,7 +5,13 @@
 
 This is a mod that modify Farm Combat layout and add extra functionalities to it.
 
-###Latest Version: [1.1.mini_patch](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
+###Latest Version: [2.0](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
+####Change Log **v.2.0**:
++ **[XNB] Add** invisible building tile to unreachable areas to prevent objects from spawning
++ **[XNB] Tweak** some tiles to make the map looks better
++ **[XNB] Open** area to the right of the house, on top of the way in from bus stop.
++ **[SMAPI] Add** config.json: click [here] to learn how it works.
+
 ####Change Log **v.1.1.mini_patch**: [XNB] Fix stuffs being able to spawn on top of greenhouse.  
 ####Change Log **v.1.1**:
 + **[XNB] Add** fishing - any forest, and mountain fishes
