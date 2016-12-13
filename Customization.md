@@ -19,7 +19,7 @@ origin
 ```
 
 ##config.json
-If you don't find this file where it's supposed to be try lauching SMAPI. The file will be generated automatically.
+If you don't find this file where it's supposed to be, try lauching SMAPI. The file will be generated automatically.
 ###1. Lists of pairs of coordinate
 **mineAreas** stores a list of pairs of tile coordinates that defines the areas where ores, gem stones can spawn.  
   + each pair stores 2 tile coordinates that make up a rectangular area of the map, Item1 and Item2.  
