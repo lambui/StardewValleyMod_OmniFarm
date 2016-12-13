@@ -18,29 +18,95 @@ namespace OmniFarm
 {
     public class OmniFarm : Mod
     {
+        public class OmniFarmConfig
+        {
+            private List<Vector2> mineLocations = new List<Vector2>();
+            private List<Vector2> grassLocations = new List<Vector2>();
+
+            public List<Tuple<Vector2, Vector2>> mineAreas { get; set; } = new List<Tuple<Vector2, Vector2>>();
+            public List<Tuple<Vector2, Vector2>> grassAreas { get; set; } = new List<Tuple<Vector2, Vector2>>();
+
+            public List<Vector2> stumpLocations { get; set; } = new List<Vector2>();
+            public List<Vector2> hollowLogLocations { get; set; } = new List<Vector2>();
+            public List<Vector2> meteoriteLocations { get; set; } = new List<Vector2>();
+            public List<Vector2> boulderLocations { get; set; } = new List<Vector2>();
+            public List<Vector2> largeRockLocations { get; set; } = new List<Vector2>();
+
+            public double oreChance { get; set; } = 0.05;
+            public double gemChance { get; set; } = 0.01;
+
+            public Vector2 WarpFromForest { get; set; } = new Vector2(32, 117);
+            public Vector2 WarpFromBackWood { get; set; } = new Vector2(-1, -1);
+            public Vector2 WarpFromBusStop { get; set; } = new Vector2(-1, -1);
+
+            public OmniFarmConfig()
+            {
+                //mine
+                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(89, 3), new Vector2(96, 7)));
+                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(97, 4), new Vector2(115, 10)));
+                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(91, 8), new Vector2(96, 8)));
+                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(92, 9), new Vector2(96, 9)));
+                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(93, 10), new Vector2(96, 10)));
+
+                //grass
+                grassAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(99, 73), new Vector2(115, 84)));
+                grassAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(99, 96), new Vector2(115, 108)));
+
+                //stump
+                List<Vector2> stumpTemp = new List<Vector2>();
+                AddVector2Grid(new Vector2(7, 24), new Vector2(7, 24), ref stumpTemp);
+                AddVector2Grid(new Vector2(9, 26), new Vector2(9, 26), ref stumpTemp);
+                AddVector2Grid(new Vector2(13, 27), new Vector2(13, 27), ref stumpTemp);
+                stumpLocations = stumpTemp;
+
+                //hollow log
+                List<Vector2> hollowLogTemp = new List<Vector2>();
+                AddVector2Grid(new Vector2(3, 23), new Vector2(3, 23), ref hollowLogTemp);
+                AddVector2Grid(new Vector2(4, 26), new Vector2(4, 26), ref hollowLogTemp);
+                AddVector2Grid(new Vector2(18, 28), new Vector2(18, 28), ref hollowLogTemp);
+                hollowLogLocations = hollowLogTemp;
+
+                //meterorite
+
+                //boulder
+
+                //large rock
+            }
+
+            public List<Vector2> getMineLocations()
+            {
+                if(mineLocations.Count <= 0 && mineAreas.Count > 0)
+                    foreach (Tuple<Vector2, Vector2> T in mineAreas)
+                    {
+                        AddVector2Grid(T.Item1, T.Item2, ref mineLocations);
+                    }
+                return mineLocations;
+            }
+
+            public List<Vector2> getGrassLocations()
+            {
+                if (grassLocations.Count <= 0 && grassAreas.Count > 0)
+                    foreach (Tuple<Vector2, Vector2> T in grassAreas)
+                    {
+                        AddVector2Grid(T.Item1, T.Item2, ref grassLocations);
+                    }
+                return grassLocations;
+            }
+        }
+
+        static public OmniFarmConfig ModConfig;
         public override void Entry(IModHelper helper)
         {
+            ModConfig = helper.ReadJsonFile<OmniFarmConfig>("config.json");
+            if (ModConfig == null)
+                ModConfig = helper.ReadConfig<OmniFarmConfig>();
+
             StardewModdingAPI.Events.TimeEvents.DayOfMonthChanged += (q, e) =>
             {
-                //change warp point
-                foreach (GameLocation GL in Game1.locations)
-                {
-                    if (GL is Forest)
-                    {
-                        foreach (Warp w in GL.warps)
-                        {
-                            if (w.TargetName.ToLower().Contains("farm"))
-                            {
-                                w.TargetX = 32;
-                                w.TargetY = 117;
-                            }
-                        }
-                    }
-                }
+                ChangeWarpPoints();
             };
             StardewModdingAPI.Events.TimeEvents.OnNewDay += UpdateTickEvent;
             
-
             /*
             StardewModdingAPI.Events.MineEvents.MineLevelChanged += (q, e) =>
             {
@@ -75,49 +141,47 @@ namespace OmniFarm
 
         static void UpdateTickEvent(object sender, EventArgs e)
         {
-            List<Vector2> mineLocation = new List<Vector2>();
-            AddVector2Grid(new Vector2(89, 3), new Vector2(96, 7), ref mineLocation);
-            AddVector2Grid(new Vector2(97, 4), new Vector2(115, 10), ref mineLocation);
-            AddVector2Grid(new Vector2(91, 8), new Vector2(96, 8), ref mineLocation);
-            AddVector2Grid(new Vector2(92, 9), new Vector2(96, 9), ref mineLocation);
-            AddVector2Grid(new Vector2(93, 10), new Vector2(96, 10), ref mineLocation);
-
-            List<Vector2> stumpLocations = new List<Vector2>();
-            AddVector2Grid(new Vector2(7, 24), new Vector2(7, 24), ref stumpLocations);
-            AddVector2Grid(new Vector2(9, 26), new Vector2(9, 26), ref stumpLocations);
-            AddVector2Grid(new Vector2(13, 27), new Vector2(13, 27), ref stumpLocations);
-
-            List<Vector2> hollowLogLocations = new List<Vector2>();
-            AddVector2Grid(new Vector2(3, 23), new Vector2(3, 23), ref hollowLogLocations);
-            AddVector2Grid(new Vector2(4, 26), new Vector2(4, 26), ref hollowLogLocations);
-            AddVector2Grid(new Vector2(18, 28), new Vector2(18, 28), ref hollowLogLocations);
-
-            List<Vector2> grassLocations = new List<Vector2>();
-            AddVector2Grid(new Vector2(99, 73), new Vector2(115, 84), ref grassLocations);
-            AddVector2Grid(new Vector2(99, 96), new Vector2(115, 108), ref grassLocations);
+            if (ModConfig == null)
+                return;
 
             foreach (GameLocation GL in Game1.locations)
             {
                 if (GL is Farm)
                 {
                     Farm ourFarm = (Farm)GL;
-                    foreach (Vector2 tile in stumpLocations)
+                    foreach (Vector2 tile in ModConfig.stumpLocations)
                     {
                         ClearResourceClump(ref ourFarm.resourceClumps, tile);
                         ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.stumpIndex, 2, 2, tile);
                     }
 
-                    foreach (Vector2 tile in hollowLogLocations)
+                    foreach (Vector2 tile in ModConfig.hollowLogLocations)
                     {
                         ClearResourceClump(ref ourFarm.resourceClumps, tile);
                         ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.hollowLogIndex, 2, 2, tile);
                     }
 
-                    GiantCrop haha = new GiantCrop(1, new Vector2(80, 16));
+                    foreach (Vector2 tile in ModConfig.meteoriteLocations)
+                    {
+                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.meteoriteIndex, 2, 2, tile);
+                    }
+
+                    foreach (Vector2 tile in ModConfig.boulderLocations)
+                    {
+                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.boulderIndex, 2, 2, tile);
+                    }
+
+                    foreach (Vector2 tile in ModConfig.largeRockLocations)
+                    {
+                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.mineRock1Index, 2, 2, tile);
+                    }
 
                     //grass
                     if (Game1.IsWinter == false)
-                        foreach (Vector2 tile in grassLocations)
+                        foreach (Vector2 tile in ModConfig.getGrassLocations())
                         {
                             TerrainFeature check;
                             if (ourFarm.terrainFeatures.TryGetValue(tile, out check))
@@ -133,7 +197,7 @@ namespace OmniFarm
 
                     //mine
                     Random randomGen = new Random();
-                    foreach (Vector2 tile in mineLocation)
+                    foreach (Vector2 tile in ModConfig.getMineLocations())
                     {
                         if (ourFarm.isObjectAt((int)tile.X, (int)tile.Y))
                             continue;
@@ -142,7 +206,7 @@ namespace OmniFarm
                         if (Game1.player.hasSkullKey)
                         {
                             //5% chance of spawn ore
-                            if (randomGen.Next(0, 100) < 5)
+                            if (randomGen.NextDouble() < ModConfig.oreChance)
                             {
                                 addRandomOre(ref ourFarm, ref randomGen, 4, tile);
                                 continue;
@@ -153,8 +217,7 @@ namespace OmniFarm
                             //check mine level
                             if (Game1.player.deepestMineLevel > 80) //gold level
                             {
-                                //5% chance of spawn ore
-                                if (randomGen.Next(0, 100) < 5)
+                                if (randomGen.NextDouble() < ModConfig.oreChance)
                                 {
                                     addRandomOre(ref ourFarm, ref randomGen, 3, tile);
                                     continue;
@@ -162,8 +225,7 @@ namespace OmniFarm
                             }
                             else if (Game1.player.deepestMineLevel > 40) //iron level
                             {
-                                //4% chance of spawn ore
-                                if (randomGen.Next(0, 100) < 4)
+                                if (randomGen.NextDouble() < ModConfig.oreChance)
                                 {
                                     addRandomOre(ref ourFarm, ref randomGen, 2, tile);
                                     continue;
@@ -171,8 +233,7 @@ namespace OmniFarm
                             }
                             else
                             {
-                                //3% chance of spawn ore
-                                if (randomGen.Next(0, 100) < 3)
+                                if (randomGen.NextDouble() < ModConfig.oreChance)
                                 {
                                     addRandomOre(ref ourFarm, ref randomGen, 1, tile);
                                     continue;
@@ -182,7 +243,7 @@ namespace OmniFarm
 
                         //if ore doesnt spawn then calculate gem spawn
                         //1% to spawn gem
-                        if (randomGen.Next(0, 100) < 1)
+                        if (randomGen.NextDouble() < ModConfig.gemChance)
                         {
                             //0.1% chance of getting mystic stone
                             if (Game1.player.hasSkullKey)
@@ -214,14 +275,54 @@ namespace OmniFarm
                         }
                     }
                 }
-                if (GL is Forest)
+            }
+        }
+
+        static void ChangeWarpPoints()
+        {
+            foreach (GameLocation GL in Game1.locations)
+            {
+                if (ModConfig.WarpFromForest.X != -1)
                 {
-                    foreach(Warp w in GL.warps)
+                    if (GL is Forest)
                     {
-                        if(w.TargetName.ToLower().Contains("farm"))
+                        foreach (Warp w in GL.warps)
                         {
-                            w.TargetX = 32;
-                            w.TargetY = 116;
+                            if (w.TargetName.ToLower().Contains("farm"))
+                            {
+                                w.TargetX = (int)ModConfig.WarpFromForest.X;
+                                w.TargetY = (int)ModConfig.WarpFromForest.Y;
+                            }
+                        }
+                    }
+                }
+                    
+                if (ModConfig.WarpFromBackWood.X != -1)
+                {
+                    if (GL.name.ToLower().Contains("backwood"))
+                    {
+                        foreach (Warp w in GL.warps)
+                        {
+                            if (w.TargetName.ToLower().Contains("farm"))
+                            {
+                                w.TargetX = (int)ModConfig.WarpFromBackWood.X;
+                                w.TargetY = (int)ModConfig.WarpFromBackWood.Y;
+                            }
+                        }
+                    }
+                }
+
+                if (ModConfig.WarpFromBusStop.X != -1)
+                {
+                    if (GL.name.ToLower().Contains("busstop"))
+                    {
+                        foreach (Warp w in GL.warps)
+                        {
+                            if (w.TargetName.ToLower().Contains("farm"))
+                            {
+                                w.TargetX = (int)ModConfig.WarpFromBusStop.X;
+                                w.TargetY = (int)ModConfig.WarpFromBusStop.Y;
+                            }
                         }
                     }
                 }
