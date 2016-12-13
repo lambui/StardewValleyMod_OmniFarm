@@ -10,7 +10,7 @@ This is a mod that modify Farm Combat layout and add extra functionalities to it
 + **[XNB] Add** invisible building tile to unreachable areas to prevent objects from spawning
 + **[XNB] Tweak** some tiles to make the map looks better
 + **[XNB] Open** area to the right of the house, on top of the way in from bus stop.
-+ **[SMAPI] Add** config.json: click [here] to learn how it works.
++ **[SMAPI] Add** config.json: click [here](https://github.com/lambui/StardewValleyMod_OmniFarm/blob/master/Customization.md) to learn how it works.
 
 ####Change Log **v.1.1.mini_patch**: [XNB] Fix stuffs being able to spawn on top of greenhouse.  
 ####Change Log **v.1.1**:
