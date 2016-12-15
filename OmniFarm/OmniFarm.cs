@@ -39,7 +39,9 @@ namespace OmniFarm
             public Vector2 WarpFromBackWood { get; set; } = new Vector2(-1, -1);
             public Vector2 WarpFromBusStop { get; set; } = new Vector2(-1, -1);
 
-            public OmniFarmConfig()
+            public OmniFarmConfig() { }
+
+            public OmniFarmConfig Default()
             {
                 //mine
                 mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(89, 3), new Vector2(96, 7)));
@@ -71,25 +73,27 @@ namespace OmniFarm
                 //boulder
 
                 //large rock
+
+                return this;
             }
 
             public List<Vector2> getMineLocations()
             {
-                if(mineLocations.Count <= 0 && mineAreas.Count > 0)
-                    foreach (Tuple<Vector2, Vector2> T in mineAreas)
-                    {
-                        AddVector2Grid(T.Item1, T.Item2, ref mineLocations);
-                    }
+                mineLocations.Clear();
+                foreach (Tuple<Vector2, Vector2> T in mineAreas)
+                {
+                    AddVector2Grid(T.Item1, T.Item2, ref mineLocations);
+                }
                 return mineLocations;
             }
 
             public List<Vector2> getGrassLocations()
             {
-                if (grassLocations.Count <= 0 && grassAreas.Count > 0)
-                    foreach (Tuple<Vector2, Vector2> T in grassAreas)
-                    {
-                        AddVector2Grid(T.Item1, T.Item2, ref grassLocations);
-                    }
+                grassLocations.Clear();
+                foreach (Tuple<Vector2, Vector2> T in grassAreas)
+                {
+                    AddVector2Grid(T.Item1, T.Item2, ref grassLocations);
+                }
                 return grassLocations;
             }
         }
@@ -99,7 +103,11 @@ namespace OmniFarm
         {
             ModConfig = helper.ReadJsonFile<OmniFarmConfig>("config.json");
             if (ModConfig == null)
-                ModConfig = helper.ReadConfig<OmniFarmConfig>();
+            {
+                ModConfig = helper.ReadConfig<OmniFarmConfig>().Default();
+                helper.WriteConfig<OmniFarmConfig>(ModConfig);
+            }
+                
 
             StardewModdingAPI.Events.TimeEvents.DayOfMonthChanged += (q, e) =>
             {
