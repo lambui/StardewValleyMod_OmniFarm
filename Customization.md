@@ -44,7 +44,7 @@ mineAreas: [
 ###2. Lists of coordinate
 These store tile coordinates (not pairs like before) of where objects should spawn each day.  
 These coordinates tell the game where the top left of the 2x2 spawn objects will be.  
-**Adding/Removing** tile coordinates to **spawn/prevent** objects at those locations each day.  
+**Adding/Removing** tile coordinates to **spawn/prevent from spawning** objects at those locations each day.  
 + **stumpLocations** for tree stump.  
 + **hollowLogLocations** for hollow log.
 + **meteoriteLocations** for meteorite.
