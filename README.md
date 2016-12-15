@@ -5,7 +5,10 @@
 
 This is a mod that modify Farm Combat layout and add extra functionalities to it.
 
-###Latest Version: [2.0](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
+###Latest Version: [2.0.1](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
+####Change Log **v.2.0.1**:
++ **[SMAPI] Fix** a bug that causes config.json changes to be ineffective.
+
 ####Change Log **v.2.0**:
 + **[XNB] Add** invisible building tile to unreachable areas to prevent objects from spawning
 + **[XNB] Tweak** some tiles to make the map looks better
