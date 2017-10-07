@@ -5,23 +5,23 @@
 
 This is a mod that modify Farm Combat layout and add extra functionalities to it.
 
-###Latest Version: [2.0.1](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
-####Change Log **v.2.0.1**:
+### Latest Version: [2.0.1](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
+#### Change Log **v.2.0.1**:
 + **[SMAPI] Fix** a bug that causes config.json changes to be ineffective.
 
-####Change Log **v.2.0**:
+#### Change Log **v.2.0**:
 + **[XNB] Add** invisible building tile to unreachable areas to prevent objects from spawning
 + **[XNB] Tweak** some tiles to make the map looks better
 + **[XNB] Open** area to the right of the house, on top of the way in from bus stop.
 + **[SMAPI] Add** config.json: click [here](https://github.com/lambui/StardewValleyMod_OmniFarm/blob/master/Customization.md) to learn how it works.
 
-####Change Log **v.1.1.mini_patch**: [XNB] Fix stuffs being able to spawn on top of greenhouse.  
-####Change Log **v.1.1**:
+#### Change Log **v.1.1.mini_patch**: [XNB] Fix stuffs being able to spawn on top of greenhouse.  
+#### Change Log **v.1.1**:
 + **[XNB] Add** fishing - any forest, and mountain fishes
 + **[XNB] Add** weeds, stones, trees, grass... to new areas (only affects new saves)
 + **[SMAPI] Fix** warp points from Forest to Farm no longer warp player to middle of the farm.
 
-####Change Log **v.1.0**:
+#### Change Log **v.1.0**:
 + **XNB Mod** Farm_Combat.xnb.
   - **Add** stairs leading to little cliff area on the left.
   - **Add** massive farming area south of farm.
@@ -36,11 +36,11 @@ This is a mod that modify Farm Combat layout and add extra functionalities to it
   
 ![FARM PIC](https://github.com/lambui/StardewValleyMod_OmniFarm/blob/master/OmniFarm.PNG)
   
-###Require:  
+### Requires:
 1. [Stardew Valley](http://store.steampowered.com/app/413150/)
 2. [SMAPI: +1.1](https://github.com/ClxS/SMAPI/releases)
 
-###Install:  
+### Install:
 1. Get [Stardew Valley](http://store.steampowered.com/app/413150/) $$$
 2. [Install SMAPI](http://canimod.com/guides/using-mods#installing-smapi)
 3. Backup Farm_Combat.xnb file in **StardewValley/Contents/Maps** folder. 
@@ -51,7 +51,7 @@ This is a mod that modify Farm Combat layout and add extra functionalities to it
 8. Copy **OmniFarmSMAPI folder** in the mod folder into your **StardewValley/Mods** folder.
 9. Run [SMAPI](http://canimod.com/guides/using-mods#installing-smapi) and enjoy!
 
-###Uninstall:  
+### Uninstall:
 1. Copy back the backup Farm_Combat.xnb into **StardewValley/Contents/Maps** folder.
 2. Either:
   - Don't run SMAPI to play.
