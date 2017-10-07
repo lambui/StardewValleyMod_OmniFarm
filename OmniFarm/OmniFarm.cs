@@ -1,17 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
-using System.IO;
-using Microsoft.Xna.Framework.Input;
-using StardewValley.Menus;
-using StardewValley.Tools;
 using StardewValley.Locations;
-using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 namespace OmniFarm
@@ -107,13 +99,8 @@ namespace OmniFarm
                 ModConfig = helper.ReadConfig<OmniFarmConfig>().Default();
                 helper.WriteConfig<OmniFarmConfig>(ModConfig);
             }
-                
 
-            StardewModdingAPI.Events.TimeEvents.DayOfMonthChanged += (q, e) =>
-            {
-                ChangeWarpPoints();
-            };
-            StardewModdingAPI.Events.TimeEvents.OnNewDay += UpdateTickEvent;
+            StardewModdingAPI.Events.TimeEvents.AfterDayStarted += AfterDayStarted;
             
             /*
             StardewModdingAPI.Events.MineEvents.MineLevelChanged += (q, e) =>
@@ -147,8 +134,10 @@ namespace OmniFarm
             */
         }
 
-        static void UpdateTickEvent(object sender, EventArgs e)
+        static void AfterDayStarted(object sender, EventArgs e)
         {
+            ChangeWarpPoints();
+
             if (ModConfig == null)
                 return;
 
