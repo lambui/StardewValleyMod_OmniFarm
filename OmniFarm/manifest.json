@@ -9,5 +9,6 @@
   },
   "UniqueID": "PhthaloBlue.OmniFarm",
   "Description": "SMAPI mod to enable intended functions of OmniFarm.",
-  "EntryDll": "OmniFarm.dll"
+  "EntryDll": "OmniFarm.dll",
+  "UpdateKeys": [ "GitHub:lambui/StardewValleyMod_OmniFarm" ]
 }
