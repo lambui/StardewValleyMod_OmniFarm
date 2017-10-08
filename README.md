@@ -1,59 +1,52 @@
-# OmniFarm Mod - A XNB and SMAPI Mod for Stardew Valley
-#### A mod for stardew valley: modify and add extra functionalities to Farm Combat layout.
+**OmniFarm** is an mod for Stardew Valley which expands the combat farm map and adds extra
+functionality:  
+![farm image](OmniFarm.PNG)
 
-**Modder:** PhthaloBlue  
+**[Download the mod here](https://github.com/lambui/StardewValleyMod_OmniFarm/releases).**
 
-This is a mod that modify Farm Combat layout and add extra functionalities to it.
+## Install
+1. Install [Stardew Valley](http://store.steampowered.com/app/413150/) and [SMAPI 1.1+](https://github.com/Pathoschild/SMAPI/releases).
+2. Back up your game's `Content\Maps\Farm_Combat.xnb` file.
+3. Unzip the mod folder (the one you just downloaded).
+4. Copy the mod's `Farm_Combat.xnb` into your game's `Contents/Maps` folder.
+5. Copy the `OmniFarmSMAPI` folder into your game's `Mods` folder.
+6. Play with SMAPI.
 
-###Latest Version: [2.0.1](https://github.com/lambui/StardewValleyMod_OmniFarm/releases)
-####Change Log **v.2.0.1**:
-+ **[SMAPI] Fix** a bug that causes config.json changes to be ineffective.
+## Uninstall
+1. Restore your game's original `Content\Maps\Farm_Combat.xnb` file.
+2. Remove `OmniFarmSMAPI` folder from your game's `Mods` folder.
 
-####Change Log **v.2.0**:
-+ **[XNB] Add** invisible building tile to unreachable areas to prevent objects from spawning
-+ **[XNB] Tweak** some tiles to make the map looks better
-+ **[XNB] Open** area to the right of the house, on top of the way in from bus stop.
-+ **[SMAPI] Add** config.json: click [here](https://github.com/lambui/StardewValleyMod_OmniFarm/blob/master/Customization.md) to learn how it works.
+## Release notes
+### 2.0.2
+* **[SMAPI]** Updated for compatibility with SMAPI 2.0.
+* **[SMAPI]** Enabled update checks in SMAPI 2.0+.
 
-####Change Log **v.1.1.mini_patch**: [XNB] Fix stuffs being able to spawn on top of greenhouse.  
-####Change Log **v.1.1**:
-+ **[XNB] Add** fishing - any forest, and mountain fishes
-+ **[XNB] Add** weeds, stones, trees, grass... to new areas (only affects new saves)
-+ **[SMAPI] Fix** warp points from Forest to Farm no longer warp player to middle of the farm.
+### 2.0.1
+* **[SMAPI]** Fixed a bug that caused `config.json` changes to be ineffective.
 
-####Change Log **v.1.0**:
-+ **XNB Mod** Farm_Combat.xnb.
-  - **Add** stairs leading to little cliff area on the left.
-  - **Add** massive farming area south of farm.
-  - **Add** stairs leading down to river area right of farm.
-  - **Add** minecart transport in top right area of selling box.
-  - **Open** little area behind your house.
-  - **Add** secret warp spot (find out yourself, it's cheating warp but i forget to remove it so there you go).
-+ **SMAPI Mod** OmniFarmSMAPI
-  - **Add** ability for farm to generate stumps and hollow logs everyday on the little cliff on the left.
-  - **Add** ability for farm to generate ores and gems on the mining area on the right of the farm.
-  - **Add** ability for farm to generate animal grass everyday (except winter) in areas at bottom right corner of the farm.
-  
-![FARM PIC](https://github.com/lambui/StardewValleyMod_OmniFarm/blob/master/OmniFarm.PNG)
-  
-###Require:  
-1. [Stardew Valley](http://store.steampowered.com/app/413150/)
-2. [SMAPI: +1.1](https://github.com/ClxS/SMAPI/releases)
+### 2.0
+* **[XNB]** Fixed objects spawning in unreachable areas.
+* **[XNB]** Tweaked some tiles to make the map looks better.
+* **[XNB]** Added open area to the right of the house, on top of the way in from bus stop.
+* **[SMAPI]** Added `config.json` ([see documentation](Customization.md)).
 
-###Install:  
-1. Get [Stardew Valley](http://store.steampowered.com/app/413150/) $$$
-2. [Install SMAPI](http://canimod.com/guides/using-mods#installing-smapi)
-3. Backup Farm_Combat.xnb file in **StardewValley/Contents/Maps** folder. 
-4. Unzip the mod folder (the one you just downloaded).
-5. Open unzipped folder. 
-6. Copy **Farm_Combat.xnb** from there into your **StardewValley/Contents/Maps** folder.
-7. You have a new playable Farm_Combat map but it is without extra functionalities for now.
-8. Copy **OmniFarmSMAPI folder** in the mod folder into your **StardewValley/Mods** folder.
-9. Run [SMAPI](http://canimod.com/guides/using-mods#installing-smapi) and enjoy!
+## 1.1.mini_patch
+* **[XNB]** Fixed objects spawning on the greenhouse.
 
-###Uninstall:  
-1. Copy back the backup Farm_Combat.xnb into **StardewValley/Contents/Maps** folder.
-2. Either:
-  - Don't run SMAPI to play.
-  - Remove **OmniFarmSMAPI folder** from **StardewValley/Mods** folder.
+## 1.1
+* **[XNB]** Added forest and mountain fish to the farm waters.
+* **[XNB]** Added weeds, stones, trees, grass, etc to new areas (only affects new saves).
+* **[SMAPI]** Fixed warp points from forest warp player to the middle of the farm.
 
+## 1.0
+* Initial XNB release:
+  - Added stairs leading to a little cliff area on the left.
+  - Added massive farming area south of farm.
+  - Added stairs leading to the river area right of farm.
+  - Added minecart transport to the top-right of the shipping box.
+  - Added open area behind your house.
+  - Added secret warp spot.
+* Initial SMAPI release:
+  - Added stump and hollow log spawning on the little cliff on the left.
+  - Added ore and gem spawning in the mining area on the right.
+  - Added animal grass spawning (except in winter) in the bottom right corner.
