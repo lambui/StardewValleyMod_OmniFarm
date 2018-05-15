@@ -19,7 +19,7 @@ functionality:
 ## Release notes
 ### 2.0.3
 * **[SMAPI]** Updated for Stardew Valley version 1.3 beta.
-* **[SMAPI]** XNB map is now loaded from assets folder, so please place the mod XNB file in assets folder. Vanilla XNB no longer needs to be replaced and thus can be restored (if previously replaced).
+* **[SMAPI]** XNB map is now loaded from folder called ``assets`` within the mod folder, so please place the mod XNB file in there. Vanilla XNB no longer needs to be replaced and thus can be restored (if previously replaced).
 * Special thanks to [TyoAtrosa](https://github.com/TyoAtrosa) for this update.
 
 
