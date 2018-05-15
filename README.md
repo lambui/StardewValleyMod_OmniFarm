@@ -17,6 +17,10 @@ functionality:
 2. Remove `OmniFarmSMAPI` folder from your game's `Mods` folder.
 
 ## Release notes
+### 2.0.3
+* **[SMAPI]** Updated for Stardew Valley version 1.3 beta. Special thanks to [TyoAtrosa](https://github.com/TyoAtrosa).
+
+
 ### 2.0.2
 * **[SMAPI]** Updated for compatibility with SMAPI 2.0.
 * **[SMAPI]** Enabled update checks in SMAPI 2.0+.
