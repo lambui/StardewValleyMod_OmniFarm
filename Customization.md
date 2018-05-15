@@ -83,5 +83,9 @@ These are default value:
   "WarpFromBusStop": "-1, -1"
 ```
 
-### 5. Restore Default config values:
+### 5. Custom Farm cave
++ **useOptionalCave**: load custom FarmCave.xnb in ``assets`` folder
+Default to ``true``
+
+### 6. Restore Default config values:
 Simply delete `config.json` and relaunch SMAPI.
