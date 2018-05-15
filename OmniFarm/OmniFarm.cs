@@ -148,50 +148,42 @@ namespace OmniFarm
                     Farm ourFarm = (Farm)GL;
                     foreach (Vector2 tile in ModConfig.stumpLocations)
                     {
-                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.terrainFeatures.Remove(tile);
                         ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.stumpIndex, 2, 2, tile);
                     }
 
                     foreach (Vector2 tile in ModConfig.hollowLogLocations)
                     {
-                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.terrainFeatures.Remove(tile);
                         ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.hollowLogIndex, 2, 2, tile);
                     }
 
                     foreach (Vector2 tile in ModConfig.meteoriteLocations)
                     {
-                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.terrainFeatures.Remove(tile);
                         ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.meteoriteIndex, 2, 2, tile);
                     }
 
                     foreach (Vector2 tile in ModConfig.boulderLocations)
                     {
-                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.terrainFeatures.Remove(tile);
                         ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.boulderIndex, 2, 2, tile);
                     }
 
                     foreach (Vector2 tile in ModConfig.largeRockLocations)
                     {
-                        ClearResourceClump(ref ourFarm.resourceClumps, tile);
+                        ourFarm.terrainFeatures.Remove(tile);
                         ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.mineRock1Index, 2, 2, tile);
                     }
-
+                    
                     //grass
                     if (Game1.IsWinter == false)
                         foreach (Vector2 tile in ModConfig.getGrassLocations())
                         {
-                            TerrainFeature check;
-                            if (ourFarm.terrainFeatures.TryGetValue(tile, out check))
-                            {
-                                if (check is Grass)
-                                {
-                                    ((Grass)check).numberOfWeeds = 4;
-                                }
-                            }
-                            else
-                                ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, 4));
+                            ourFarm.terrainFeatures.Remove(tile);
+                            ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, 4));
                         }
-
+                    
                     //mine
                     Random randomGen = new Random();
                     foreach (Vector2 tile in ModConfig.getMineLocations())
@@ -274,7 +266,7 @@ namespace OmniFarm
                 }
             }
         }
-
+        
         static void ChangeWarpPoints()
         {
             foreach (GameLocation GL in Game1.locations)
@@ -296,7 +288,7 @@ namespace OmniFarm
                     
                 if (ModConfig.WarpFromBackWood.X != -1)
                 {
-                    if (GL.name.ToLower().Contains("backwood"))
+                    if (GL.Name.ToLower().Contains("backwood"))
                     {
                         foreach (Warp w in GL.warps)
                         {
@@ -311,7 +303,7 @@ namespace OmniFarm
 
                 if (ModConfig.WarpFromBusStop.X != -1)
                 {
-                    if (GL.name.ToLower().Contains("busstop"))
+                    if (GL.Name.ToLower().Contains("busstop"))
                     {
                         foreach (Warp w in GL.warps)
                         {
@@ -325,7 +317,7 @@ namespace OmniFarm
                 }
             }
         }
-
+        
         static void addRandomOre(ref Farm input, ref Random randomGen, int highestOreLevel, Vector2 tileLocation)
         {
             switch (randomGen.Next(0, 100) % highestOreLevel)
@@ -358,20 +350,7 @@ namespace OmniFarm
                 default: return null;
             }
         }
-
-        static void ClearResourceClump(ref List<ResourceClump> input, Vector2 RCLocation)
-        {
-            for (int i = 0; i < input.Count; i++)
-            {
-                ResourceClump RC = input[i];
-                if (RC.tile == RCLocation)
-                {
-                    input.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-
+        
         static void ClearKey(ref SerializableDictionary<Vector2, TerrainFeature> input, Vector2 KeyToClear)
         {
             if (input.Remove(KeyToClear))
