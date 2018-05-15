@@ -20,6 +20,7 @@ functionality:
 ### 2.0.3
 * **[SMAPI]** Updated for Stardew Valley version 1.3 beta.
 * **[SMAPI]** XNB map is now loaded from folder called ``assets`` within the mod folder, so please place the mod XNB file in there. Vanilla XNB no longer needs to be replaced and thus can be restored (if previously replaced).
+* **[SMAPI]** Added Custom farm cave capacity. To use, just place ``FarmCave.xnb`` file into ``assets`` folder and set useOptionalCave to ``true`` in config file. Enable by default. To disable, set useOptionalCave to ``false``.
 * Special thanks to [TyoAtrosa](https://github.com/TyoAtrosa) for this update.
 
 
