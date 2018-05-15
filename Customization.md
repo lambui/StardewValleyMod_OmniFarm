@@ -84,7 +84,7 @@ These are default value:
 ```
 
 ### 5. Custom Farm cave
-+ **useOptionalCave**: load custom FarmCave.xnb in ``assets`` folder
++ **useOptionalCave**: load custom FarmCave.xnb in ``assets`` folder  
 Default to ``true``
 
 ### 6. Restore Default config values:
