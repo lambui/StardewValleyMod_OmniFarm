@@ -1,6 +1,6 @@
 **OmniFarm** is an mod for Stardew Valley which expands the combat farm map and adds extra
 functionality:  
-![farm image](Omnifarm.PNG)
+![farm image](Omnifarm.png)
 
 ## Install
 1. Install [Stardew Valley](http://store.steampowered.com/app/413150/) and [SMAPI 2.6-Beta](https://github.com/Pathoschild/SMAPI/releases).
