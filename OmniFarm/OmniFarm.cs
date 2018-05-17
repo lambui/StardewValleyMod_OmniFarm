@@ -8,10 +8,20 @@ using StardewValley.TerrainFeatures;
 
 namespace OmniFarm
 {
-    public class OmniFarm : Mod
+    public class OmniFarm : Mod, IAssetLoader
     {
+        public bool CanLoad<T>(IAssetInfo asset)
+        {
+            return asset.AssetNameEquals(@"Maps\Farm_Combat");
+        }
+        public T Load<T>(IAssetInfo asset)
+        {
+            return this.Helper.Content.Load<T>(@"assets\Farm_Combat.xnb");
+        }
         public class OmniFarmConfig
         {
+            public bool useOptionalCave = false;
+            public int GrassGrowth_1forsparse_4forFull = 4;
             private List<Vector2> mineLocations = new List<Vector2>();
             private List<Vector2> grassLocations = new List<Vector2>();
 
@@ -99,174 +109,159 @@ namespace OmniFarm
                 ModConfig = helper.ReadConfig<OmniFarmConfig>().Default();
                 helper.WriteConfig<OmniFarmConfig>(ModConfig);
             }
+            if (ModConfig.useOptionalCave == true)
+            {
+                helper.Content.AssetLoaders.Add(new MyAssetLoader(helper));
+            }
 
             StardewModdingAPI.Events.TimeEvents.AfterDayStarted += AfterDayStarted;
-            
-            /*
-            StardewModdingAPI.Events.MineEvents.MineLevelChanged += (q, e) =>
-            {
-                if (ModConfig == null)
-                    return;
 
-                if ((Game1.currentLocation is MineShaft) == false)
-                    return;
-
-                List<Vector2> grassLocations = new List<Vector2>();
-                AddVector2Grid(new Vector2(0, 0), new Vector2(50, 50), ref grassLocations);
-                foreach (Vector2 tile in grassLocations)
-                {
-                    StardewValley.Object check;
-                    if (Game1.currentLocation.objects.TryGetValue(tile, out check))
-                    {
-                        Log.Debug(check.name);
-                        Log.Debug(check.bigCraftable);
-                        Log.Debug(check.isOn);
-                        Log.Debug(check.canBeGrabbed);
-                        Log.Debug(check.canBeSetDown);
-                        Log.Debug(check.parentSheetIndex);
-                        Log.Debug(check.getHealth());
-                        Log.Debug(check.fragility);
-                        Log.Debug(check.type);
-                        Log.Debug(check.GetType());
-                    }
-                }
-            };
-            */
         }
 
         static void AfterDayStarted(object sender, EventArgs e)
         {
-            ChangeWarpPoints();
-
-            if (ModConfig == null)
-                return;
-
-            foreach (GameLocation GL in Game1.locations)
+            if (Game1.whichFarm == 4)
             {
-                if (GL is Farm)
+                ChangeWarpPoints();
+
+                if (ModConfig == null)
+                    return;
+
+                foreach (GameLocation GL in Game1.locations)
                 {
-                    Farm ourFarm = (Farm)GL;
-                    foreach (Vector2 tile in ModConfig.stumpLocations)
+                    if (GL is Farm)                    
                     {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.stumpIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.hollowLogLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.hollowLogIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.meteoriteLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.meteoriteIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.boulderLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.boulderIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.largeRockLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.mineRock1Index, 2, 2, tile);
-                    }
-                    
-                    //grass
-                    if (Game1.IsWinter == false)
-                        foreach (Vector2 tile in ModConfig.getGrassLocations())
+                        Farm ourFarm = (Farm)GL;
+                        foreach (Vector2 tile in ModConfig.stumpLocations)
                         {
-                            ourFarm.terrainFeatures.Remove(tile);
-                            ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, 4));
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.stumpIndex, 2, 2, tile);
                         }
-                    
-                    //mine
-                    Random randomGen = new Random();
-                    foreach (Vector2 tile in ModConfig.getMineLocations())
-                    {
-                        if (ourFarm.isObjectAt((int)tile.X, (int)tile.Y))
-                            continue;
 
-                        //calculate ore spawn
-                        if (Game1.player.hasSkullKey)
+                        foreach (Vector2 tile in ModConfig.hollowLogLocations)
                         {
-                            //5% chance of spawn ore
-                            if (randomGen.NextDouble() < ModConfig.oreChance)
-                            {
-                                addRandomOre(ref ourFarm, ref randomGen, 4, tile);
-                                continue;
-                            }
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.hollowLogIndex, 2, 2, tile);
                         }
-                        else
+
+                        foreach (Vector2 tile in ModConfig.meteoriteLocations)
                         {
-                            //check mine level
-                            if (Game1.player.deepestMineLevel > 80) //gold level
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.meteoriteIndex, 2, 2, tile);
+                        }
+
+                        foreach (Vector2 tile in ModConfig.boulderLocations)
+                        {
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.boulderIndex, 2, 2, tile);
+                        }
+
+                        foreach (Vector2 tile in ModConfig.largeRockLocations)
+                        {
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.mineRock1Index, 2, 2, tile);
+                        }
+
+                        //grass
+                        if (Game1.IsWinter == false)
+                            foreach (Vector2 tile in ModConfig.getGrassLocations())
                             {
-                                if (randomGen.NextDouble() < ModConfig.oreChance)
+                                TerrainFeature check;
+                                if (ourFarm.terrainFeatures.TryGetValue(tile, out check))
                                 {
-                                    addRandomOre(ref ourFarm, ref randomGen, 3, tile);
-                                    continue;
+                                    if (check is Grass)
+                                    {
+                                        ((Grass)check).numberOfWeeds.Value = ModConfig.GrassGrowth_1forsparse_4forFull;
+                                    }
                                 }
+                                else
+                                    ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, ModConfig.GrassGrowth_1forsparse_4forFull));
                             }
-                            else if (Game1.player.deepestMineLevel > 40) //iron level
+
+                        //mine
+                        Random randomGen = new Random();
+                        foreach (Vector2 tile in ModConfig.getMineLocations())
+                        {
+                            if (ourFarm.isObjectAt((int)tile.X, (int)tile.Y))
+                                continue;
+
+                            //calculate ore spawn
+                            if (Game1.player.hasSkullKey)
                             {
+                                //5% chance of spawn ore
                                 if (randomGen.NextDouble() < ModConfig.oreChance)
                                 {
-                                    addRandomOre(ref ourFarm, ref randomGen, 2, tile);
+                                    addRandomOre(ref ourFarm, ref randomGen, 4, tile);
                                     continue;
                                 }
                             }
                             else
                             {
-                                if (randomGen.NextDouble() < ModConfig.oreChance)
+                                //check mine level
+                                if (Game1.player.deepestMineLevel > 80) //gold level
                                 {
-                                    addRandomOre(ref ourFarm, ref randomGen, 1, tile);
-                                    continue;
+                                    if (randomGen.NextDouble() < ModConfig.oreChance)
+                                    {
+                                        addRandomOre(ref ourFarm, ref randomGen, 3, tile);
+                                        continue;
+                                    }
                                 }
-                            }
-                        }
-
-                        //if ore doesnt spawn then calculate gem spawn
-                        //1% to spawn gem
-                        if (randomGen.NextDouble() < ModConfig.gemChance)
-                        {
-                            //0.1% chance of getting mystic stone
-                            if (Game1.player.hasSkullKey)
-                                if (randomGen.Next(0, 100) < 1)
+                                else if (Game1.player.deepestMineLevel > 40) //iron level
                                 {
-                                    ourFarm.setObject(tile, createOre("mysticStone", tile));
-                                    continue;
+                                    if (randomGen.NextDouble() < ModConfig.oreChance)
+                                    {
+                                        addRandomOre(ref ourFarm, ref randomGen, 2, tile);
+                                        continue;
+                                    }
                                 }
                                 else
-                                if (randomGen.Next(0, 500) < 1)
                                 {
-                                    ourFarm.setObject(tile, createOre("mysticStone", tile));
-                                    continue;
+                                    if (randomGen.NextDouble() < ModConfig.oreChance)
+                                    {
+                                        addRandomOre(ref ourFarm, ref randomGen, 1, tile);
+                                        continue;
+                                    }
                                 }
-
-                            switch (randomGen.Next(0, 100) % 8)
-                            {
-                                case 0: ourFarm.setObject(tile, createOre("gemStone", tile)); break;
-                                case 1: ourFarm.setObject(tile, createOre("diamond", tile)); break;
-                                case 2: ourFarm.setObject(tile, createOre("ruby", tile)); break;
-                                case 3: ourFarm.setObject(tile, createOre("jade", tile)); break;
-                                case 4: ourFarm.setObject(tile, createOre("amethyst", tile)); break;
-                                case 5: ourFarm.setObject(tile, createOre("topaz", tile)); break;
-                                case 6: ourFarm.setObject(tile, createOre("emerald", tile)); break;
-                                case 7: ourFarm.setObject(tile, createOre("aquamarine", tile)); break;
-                                default: break;
                             }
-                            continue;
+
+                            //if ore doesnt spawn then calculate gem spawn
+                            //1% to spawn gem
+                            if (randomGen.NextDouble() < ModConfig.gemChance)
+                            {
+                                //0.1% chance of getting mystic stone
+                                if (Game1.player.hasSkullKey)
+                                    if (randomGen.Next(0, 100) < 1)
+                                    {
+                                        ourFarm.setObject(tile, createOre("mysticStone", tile));
+                                        continue;
+                                    }
+                                    else
+                                    if (randomGen.Next(0, 500) < 1)
+                                    {
+                                        ourFarm.setObject(tile, createOre("mysticStone", tile));
+                                        continue;
+                                    }
+
+                                switch (randomGen.Next(0, 100) % 8)
+                                {
+                                    case 0: ourFarm.setObject(tile, createOre("gemStone", tile)); break;
+                                    case 1: ourFarm.setObject(tile, createOre("diamond", tile)); break;
+                                    case 2: ourFarm.setObject(tile, createOre("ruby", tile)); break;
+                                    case 3: ourFarm.setObject(tile, createOre("jade", tile)); break;
+                                    case 4: ourFarm.setObject(tile, createOre("amethyst", tile)); break;
+                                    case 5: ourFarm.setObject(tile, createOre("topaz", tile)); break;
+                                    case 6: ourFarm.setObject(tile, createOre("emerald", tile)); break;
+                                    case 7: ourFarm.setObject(tile, createOre("aquamarine", tile)); break;
+                                    default: break;
+                                }
+                                continue;
+                            }
                         }
                     }
                 }
             }
         }
-        
+
         static void ChangeWarpPoints()
         {
             foreach (GameLocation GL in Game1.locations)
@@ -285,7 +280,7 @@ namespace OmniFarm
                         }
                     }
                 }
-                    
+
                 if (ModConfig.WarpFromBackWood.X != -1)
                 {
                     if (GL.Name.ToLower().Contains("backwood"))
@@ -317,7 +312,7 @@ namespace OmniFarm
                 }
             }
         }
-        
+
         static void addRandomOre(ref Farm input, ref Random randomGen, int highestOreLevel, Vector2 tileLocation)
         {
             switch (randomGen.Next(0, 100) % highestOreLevel)
@@ -350,7 +345,20 @@ namespace OmniFarm
                 default: return null;
             }
         }
-        
+
+        static void ClearResourceClump(IList<ResourceClump> input, Vector2 RCLocation)
+        {
+            for (int i = 0; i < input.Count; i++)
+            {
+                ResourceClump RC = input[i];
+                if (RC.tile.Value == RCLocation)
+                {
+                    input.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
         static void ClearKey(ref SerializableDictionary<Vector2, TerrainFeature> input, Vector2 KeyToClear)
         {
             if (input.Remove(KeyToClear))
@@ -377,7 +385,7 @@ namespace OmniFarm
                     j++;
                 }
                 i++;
-            }
+            }          
         }
     }
 }
