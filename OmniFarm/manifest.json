@@ -6,5 +6,5 @@
    "UniqueID": "PhthaloBlue.Omnifarm",
    "EntryDll": "Omnifarm.dll",
    "MinimumApiVersion": "2.6-beta",
-   "UpdateKeys": []
+   "UpdateKeys": ["GitHub:lambui/StardewValleyMod_OmniFarm"]
 }

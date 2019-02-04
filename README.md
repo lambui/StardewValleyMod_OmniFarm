@@ -1,20 +1,15 @@
 **OmniFarm** is an mod for Stardew Valley which expands the combat farm map and adds extra
 functionality:  
-![farm image](OmniFarm.PNG)
-
-**[Download the mod here](https://github.com/lambui/StardewValleyMod_OmniFarm/releases).**
+![farm image](Omnifarm.png)
 
 ## Install
-1. Install [Stardew Valley](http://store.steampowered.com/app/413150/) and [SMAPI 1.1+](https://github.com/Pathoschild/SMAPI/releases).
-2. Back up your game's `Content\Maps\Farm_Combat.xnb` file.
-3. Unzip the mod folder (the one you just downloaded).
-4. Copy the mod's `Farm_Combat.xnb` into your game's `Contents/Maps` folder.
-5. Copy the `OmniFarmSMAPI` folder into your game's `Mods` folder.
-6. Play with SMAPI.
+1. Install [Stardew Valley](http://store.steampowered.com/app/413150/) and [SMAPI 2.6-Beta](https://github.com/Pathoschild/SMAPI/releases).
+2. Unzip the mod folder (the one you just downloaded).
+3. Copy the `OmniFarmSMAPI` folder into your game's `Mods` folder.
+4. Play with SMAPI.
 
 ## Uninstall
-1. Restore your game's original `Content\Maps\Farm_Combat.xnb` file.
-2. Remove `OmniFarmSMAPI` folder from your game's `Mods` folder.
+  Remove `OmniFarmSMAPI` folder from your game's `Mods` folder.
 
 ## Release notes
 ### 2.0.3
@@ -22,7 +17,6 @@ functionality:
 * **[SMAPI]** XNB map is now loaded from folder called ``assets`` within the mod folder, so please place the mod XNB file in there. Vanilla XNB no longer needs to be replaced and thus can be restored (if previously replaced).
 * **[SMAPI]** Added Custom farm cave capacity. To use, just place ``FarmCave.xnb`` file into ``assets`` folder and set useOptionalCave to ``true`` in config file. Enable by default. To disable, set useOptionalCave to ``false``.
 * Special thanks to [TyoAtrosa](https://github.com/TyoAtrosa) for this update.
-
 
 ### 2.0.2
 * **[SMAPI]** Updated for compatibility with SMAPI 2.0.
