@@ -16,7 +16,7 @@ namespace OmniFarm
         }
         public T Load<T>(IAssetInfo asset)
         {
-            return this.Helper.Content.Load<T>(@"assets\Farm_Combat.xnb");
+            return this.Helper.Content.Load<T>(@"assets\Farm_Combat.tbin");
         }
         public class OmniFarmConfig
         {

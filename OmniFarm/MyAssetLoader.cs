@@ -18,7 +18,7 @@ namespace OmniFarm
 
         public T Load<T>(IAssetInfo asset)
         {
-            return this.helper.Content.Load<T>(@"assets\FarmCave.xnb");
+            return this.helper.Content.Load<T>(@"assets\FarmCave.tbin");
         }
     }
 }
