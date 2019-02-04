@@ -56,7 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyAssetLoader.cs" />
     <Compile Include="OmniFarm.cs" />
     <Compile Include="OmniFarmConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

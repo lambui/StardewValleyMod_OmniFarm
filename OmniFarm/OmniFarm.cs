@@ -12,27 +12,23 @@ namespace OmniFarm
     {
         public bool CanLoad<T>(IAssetInfo asset)
         {
-            return asset.AssetNameEquals(@"Maps\Farm_Combat");
+            return
+                asset.AssetNameEquals(@"Maps\Farm_Combat")
+                || (Config.useOptionalCave && asset.AssetNameEquals(@"Maps\FarmCave"));
         }
         public T Load<T>(IAssetInfo asset)
         {
-            return this.Helper.Content.Load<T>(@"assets\Farm_Combat.tbin");
+            if (asset.AssetNameEquals(@"Maps\Farm_Combat"))
+                return this.Helper.Content.Load<T>(@"assets\Farm_Combat.tbin");
+            if (asset.AssetNameEquals(@"Maps\FarmCave"))
+                return this.Helper.Content.Load<T>(@"assets\FarmCave.tbin");
+            throw new NotSupportedException($"Unknown asset {asset.AssetName}");
         }
 
-        private static OmniFarmConfig ModConfig;
+        private static OmniFarmConfig Config;
         public override void Entry(IModHelper helper)
         {
-            ModConfig = helper.ReadJsonFile<OmniFarmConfig>("config.json");
-            if (ModConfig == null)
-            {
-                ModConfig = helper.ReadConfig<OmniFarmConfig>().Default();
-                helper.WriteConfig<OmniFarmConfig>(ModConfig);
-            }
-            if (ModConfig.useOptionalCave == true)
-            {
-                helper.Content.AssetLoaders.Add(new MyAssetLoader(helper));
-            }
-
+            Config = helper.ReadConfig<OmniFarmConfig>();
             StardewModdingAPI.Events.TimeEvents.AfterDayStarted += AfterDayStarted;
 
         }
@@ -43,7 +39,7 @@ namespace OmniFarm
             {
                 ChangeWarpPoints();
 
-                if (ModConfig == null)
+                if (Config == null)
                     return;
 
                 foreach (GameLocation GL in Game1.locations)
@@ -51,31 +47,31 @@ namespace OmniFarm
                     if (GL is Farm)
                     {
                         Farm ourFarm = (Farm)GL;
-                        foreach (Vector2 tile in ModConfig.stumpLocations)
+                        foreach (Vector2 tile in Config.stumpLocations)
                         {
                             ClearResourceClump(ourFarm.resourceClumps, tile);
                             ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.stumpIndex, 2, 2, tile);
                         }
 
-                        foreach (Vector2 tile in ModConfig.hollowLogLocations)
+                        foreach (Vector2 tile in Config.hollowLogLocations)
                         {
                             ClearResourceClump(ourFarm.resourceClumps, tile);
                             ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.hollowLogIndex, 2, 2, tile);
                         }
 
-                        foreach (Vector2 tile in ModConfig.meteoriteLocations)
+                        foreach (Vector2 tile in Config.meteoriteLocations)
                         {
                             ClearResourceClump(ourFarm.resourceClumps, tile);
                             ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.meteoriteIndex, 2, 2, tile);
                         }
 
-                        foreach (Vector2 tile in ModConfig.boulderLocations)
+                        foreach (Vector2 tile in Config.boulderLocations)
                         {
                             ClearResourceClump(ourFarm.resourceClumps, tile);
                             ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.boulderIndex, 2, 2, tile);
                         }
 
-                        foreach (Vector2 tile in ModConfig.largeRockLocations)
+                        foreach (Vector2 tile in Config.largeRockLocations)
                         {
                             ClearResourceClump(ourFarm.resourceClumps, tile);
                             ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.mineRock1Index, 2, 2, tile);
@@ -83,23 +79,23 @@ namespace OmniFarm
 
                         //grass
                         if (Game1.IsWinter == false)
-                            foreach (Vector2 tile in ModConfig.getGrassLocations())
+                            foreach (Vector2 tile in Config.getGrassLocations())
                             {
                                 TerrainFeature check;
                                 if (ourFarm.terrainFeatures.TryGetValue(tile, out check))
                                 {
                                     if (check is Grass)
                                     {
-                                        ((Grass)check).numberOfWeeds.Value = ModConfig.GrassGrowth_1forsparse_4forFull;
+                                        ((Grass)check).numberOfWeeds.Value = Config.GrassGrowth_1forsparse_4forFull;
                                     }
                                 }
                                 else
-                                    ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, ModConfig.GrassGrowth_1forsparse_4forFull));
+                                    ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, Config.GrassGrowth_1forsparse_4forFull));
                             }
 
                         //mine
                         Random randomGen = new Random();
-                        foreach (Vector2 tile in ModConfig.getMineLocations())
+                        foreach (Vector2 tile in Config.getMineLocations())
                         {
                             if (ourFarm.isObjectAt((int)tile.X, (int)tile.Y))
                                 continue;
@@ -108,7 +104,7 @@ namespace OmniFarm
                             if (Game1.player.hasSkullKey)
                             {
                                 //5% chance of spawn ore
-                                if (randomGen.NextDouble() < ModConfig.oreChance)
+                                if (randomGen.NextDouble() < Config.oreChance)
                                 {
                                     addRandomOre(ref ourFarm, ref randomGen, 4, tile);
                                     continue;
@@ -119,7 +115,7 @@ namespace OmniFarm
                                 //check mine level
                                 if (Game1.player.deepestMineLevel > 80) //gold level
                                 {
-                                    if (randomGen.NextDouble() < ModConfig.oreChance)
+                                    if (randomGen.NextDouble() < Config.oreChance)
                                     {
                                         addRandomOre(ref ourFarm, ref randomGen, 3, tile);
                                         continue;
@@ -127,7 +123,7 @@ namespace OmniFarm
                                 }
                                 else if (Game1.player.deepestMineLevel > 40) //iron level
                                 {
-                                    if (randomGen.NextDouble() < ModConfig.oreChance)
+                                    if (randomGen.NextDouble() < Config.oreChance)
                                     {
                                         addRandomOre(ref ourFarm, ref randomGen, 2, tile);
                                         continue;
@@ -135,7 +131,7 @@ namespace OmniFarm
                                 }
                                 else
                                 {
-                                    if (randomGen.NextDouble() < ModConfig.oreChance)
+                                    if (randomGen.NextDouble() < Config.oreChance)
                                     {
                                         addRandomOre(ref ourFarm, ref randomGen, 1, tile);
                                         continue;
@@ -145,7 +141,7 @@ namespace OmniFarm
 
                             //if ore doesnt spawn then calculate gem spawn
                             //1% to spawn gem
-                            if (randomGen.NextDouble() < ModConfig.gemChance)
+                            if (randomGen.NextDouble() < Config.gemChance)
                             {
                                 //0.1% chance of getting mystic stone
                                 if (Game1.player.hasSkullKey)
@@ -185,7 +181,7 @@ namespace OmniFarm
         {
             foreach (GameLocation GL in Game1.locations)
             {
-                if (ModConfig.WarpFromForest.X != -1)
+                if (Config.WarpFromForest.X != -1)
                 {
                     if (GL is Forest)
                     {
@@ -193,14 +189,14 @@ namespace OmniFarm
                         {
                             if (w.TargetName.ToLower().Contains("farm"))
                             {
-                                w.TargetX = (int)ModConfig.WarpFromForest.X;
-                                w.TargetY = (int)ModConfig.WarpFromForest.Y;
+                                w.TargetX = (int)Config.WarpFromForest.X;
+                                w.TargetY = (int)Config.WarpFromForest.Y;
                             }
                         }
                     }
                 }
 
-                if (ModConfig.WarpFromBackWood.X != -1)
+                if (Config.WarpFromBackWood.X != -1)
                 {
                     if (GL.Name.ToLower().Contains("backwood"))
                     {
@@ -208,14 +204,14 @@ namespace OmniFarm
                         {
                             if (w.TargetName.ToLower().Contains("farm"))
                             {
-                                w.TargetX = (int)ModConfig.WarpFromBackWood.X;
-                                w.TargetY = (int)ModConfig.WarpFromBackWood.Y;
+                                w.TargetX = (int)Config.WarpFromBackWood.X;
+                                w.TargetY = (int)Config.WarpFromBackWood.Y;
                             }
                         }
                     }
                 }
 
-                if (ModConfig.WarpFromBusStop.X != -1)
+                if (Config.WarpFromBusStop.X != -1)
                 {
                     if (GL.Name.ToLower().Contains("busstop"))
                     {
@@ -223,8 +219,8 @@ namespace OmniFarm
                         {
                             if (w.TargetName.ToLower().Contains("farm"))
                             {
-                                w.TargetX = (int)ModConfig.WarpFromBusStop.X;
-                                w.TargetY = (int)ModConfig.WarpFromBusStop.Y;
+                                w.TargetX = (int)Config.WarpFromBusStop.X;
+                                w.TargetY = (int)Config.WarpFromBusStop.Y;
                             }
                         }
                     }
