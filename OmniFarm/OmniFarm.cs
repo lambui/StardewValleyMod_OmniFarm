@@ -100,13 +100,10 @@ namespace OmniFarm
                         if (Game1.IsWinter == false)
                             foreach (Vector2 tile in Config.getGrassLocations())
                             {
-                                TerrainFeature check;
-                                if (ourFarm.terrainFeatures.TryGetValue(tile, out check))
+                                if (ourFarm.terrainFeatures.TryGetValue(tile, out TerrainFeature check))
                                 {
-                                    if (check is Grass)
-                                    {
-                                        ((Grass)check).numberOfWeeds.Value = Config.GrassGrowth_1forsparse_4forFull;
-                                    }
+                                    if (check is Grass grass)
+                                        grass.numberOfWeeds.Value = Config.GrassGrowth_1forsparse_4forFull;
                                 }
                                 else
                                     ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, Config.GrassGrowth_1forsparse_4forFull));
@@ -158,7 +155,7 @@ namespace OmniFarm
                                 }
                             }
 
-                            //if ore doesnt spawn then calculate gem spawn
+                            //if ore doesn't spawn then calculate gem spawn
                             //1% to spawn gem
                             if (randomGen.NextDouble() < Config.gemChance)
                             {
