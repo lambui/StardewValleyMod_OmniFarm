@@ -5,17 +5,41 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
+using SObject = StardewValley.Object;
 
 namespace OmniFarm
 {
     public class OmniFarm : Mod, IAssetLoader
     {
+        /*********
+        ** Fields
+        *********/
+        private OmniFarmConfig Config;
+
+
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        public override void Entry(IModHelper helper)
+        {
+            Config = helper.ReadConfig<OmniFarmConfig>();
+
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+        }
+
+        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanLoad<T>(IAssetInfo asset)
         {
             return
                 asset.AssetNameEquals(@"Maps\Farm_Combat")
                 || (Config.useOptionalCave && asset.AssetNameEquals(@"Maps\FarmCave"));
         }
+
+        /// <summary>Load a matched asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public T Load<T>(IAssetInfo asset)
         {
             if (asset.AssetNameEquals(@"Maps\Farm_Combat"))
@@ -25,28 +49,23 @@ namespace OmniFarm
             throw new NotSupportedException($"Unknown asset {asset.AssetName}");
         }
 
-        private static OmniFarmConfig Config;
-        public override void Entry(IModHelper helper)
-        {
-            Config = helper.ReadConfig<OmniFarmConfig>();
-            StardewModdingAPI.Events.TimeEvents.AfterDayStarted += AfterDayStarted;
 
-        }
-
-        static void AfterDayStarted(object sender, EventArgs e)
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnDayStarted(object sender, EventArgs e)
         {
-            if (Game1.whichFarm == 4)
+            if (Game1.whichFarm == Farm.combat_layout)
             {
                 ChangeWarpPoints();
 
-                if (Config == null)
-                    return;
-
                 foreach (GameLocation GL in Game1.locations)
                 {
-                    if (GL is Farm)
+                    if (GL is Farm ourFarm)
                     {
-                        Farm ourFarm = (Farm)GL;
                         foreach (Vector2 tile in Config.stumpLocations)
                         {
                             ClearResourceClump(ourFarm.resourceClumps, tile);
@@ -167,7 +186,6 @@ namespace OmniFarm
                                     case 5: ourFarm.setObject(tile, createOre("topaz", tile)); break;
                                     case 6: ourFarm.setObject(tile, createOre("emerald", tile)); break;
                                     case 7: ourFarm.setObject(tile, createOre("aquamarine", tile)); break;
-                                    default: break;
                                 }
                                 continue;
                             }
@@ -177,7 +195,7 @@ namespace OmniFarm
             }
         }
 
-        static void ChangeWarpPoints()
+        private void ChangeWarpPoints()
         {
             foreach (GameLocation GL in Game1.locations)
             {
@@ -228,7 +246,7 @@ namespace OmniFarm
             }
         }
 
-        static void addRandomOre(ref Farm input, ref Random randomGen, int highestOreLevel, Vector2 tileLocation)
+        private void addRandomOre(ref Farm input, ref Random randomGen, int highestOreLevel, Vector2 tileLocation)
         {
             switch (randomGen.Next(0, 100) % highestOreLevel)
             {
@@ -236,37 +254,36 @@ namespace OmniFarm
                 case 1: input.setObject(tileLocation, createOre("ironStone", tileLocation)); break;
                 case 2: input.setObject(tileLocation, createOre("goldStone", tileLocation)); break;
                 case 3: input.setObject(tileLocation, createOre("iridiumStone", tileLocation)); break;
-                default: break;
             }
         }
 
-        static StardewValley.Object createOre(string oreName, Vector2 tileLocation)
+        private SObject createOre(string oreName, Vector2 tileLocation)
         {
             switch (oreName)
             {
-                case "mysticStone": return new StardewValley.Object(tileLocation, 46, "Stone", true, false, false, false);
-                case "gemStone": return new StardewValley.Object(tileLocation, (Game1.random.Next(7) + 1) * 2, "Stone", true, false, false, false);
-                case "diamond": return new StardewValley.Object(tileLocation, 2, "Stone", true, false, false, false);
-                case "ruby": return new StardewValley.Object(tileLocation, 4, "Stone", true, false, false, false);
-                case "jade": return new StardewValley.Object(tileLocation, 6, "Stone", true, false, false, false);
-                case "amethyst": return new StardewValley.Object(tileLocation, 8, "Stone", true, false, false, false);
-                case "topaz": return new StardewValley.Object(tileLocation, 10, "Stone", true, false, false, false);
-                case "emerald": return new StardewValley.Object(tileLocation, 12, "Stone", true, false, false, false);
-                case "aquamarine": return new StardewValley.Object(tileLocation, 14, "Stone", true, false, false, false);
-                case "iridiumStone": return new StardewValley.Object(tileLocation, 765, 1);
-                case "goldStone": return new StardewValley.Object(tileLocation, 764, 1);
-                case "ironStone": return new StardewValley.Object(tileLocation, 290, 1);
-                case "copperStone": return new StardewValley.Object(tileLocation, 751, 1);
+                case "mysticStone": return new SObject(tileLocation, 46, "Stone", true, false, false, false);
+                case "gemStone": return new SObject(tileLocation, (Game1.random.Next(7) + 1) * 2, "Stone", true, false, false, false);
+                case "diamond": return new SObject(tileLocation, 2, "Stone", true, false, false, false);
+                case "ruby": return new SObject(tileLocation, 4, "Stone", true, false, false, false);
+                case "jade": return new SObject(tileLocation, 6, "Stone", true, false, false, false);
+                case "amethyst": return new SObject(tileLocation, 8, "Stone", true, false, false, false);
+                case "topaz": return new SObject(tileLocation, 10, "Stone", true, false, false, false);
+                case "emerald": return new SObject(tileLocation, 12, "Stone", true, false, false, false);
+                case "aquamarine": return new SObject(tileLocation, 14, "Stone", true, false, false, false);
+                case "iridiumStone": return new SObject(tileLocation, 765, 1);
+                case "goldStone": return new SObject(tileLocation, 764, 1);
+                case "ironStone": return new SObject(tileLocation, 290, 1);
+                case "copperStone": return new SObject(tileLocation, 751, 1);
                 default: return null;
             }
         }
 
-        static void ClearResourceClump(IList<ResourceClump> input, Vector2 RCLocation)
+        private void ClearResourceClump(IList<ResourceClump> input, Vector2 tile)
         {
             for (int i = 0; i < input.Count; i++)
             {
                 ResourceClump RC = input[i];
-                if (RC.tile.Value == RCLocation)
+                if (RC.tile.Value == tile)
                 {
                     input.RemoveAt(i);
                     i--;
